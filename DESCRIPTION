@@ -1,0 +1,9 @@
+Package: b2xml
+Type: Package
+Title: Edit and visualize BEAST 2 XML
+Version: 0.0.9
+Author: Walter Xie
+Description: R package to edit and visualize BEAST 2 XML.
+License: MIT
+Encoding: UTF-8
+LazyData: true
