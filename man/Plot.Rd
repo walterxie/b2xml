@@ -31,11 +31,12 @@ barLocDate(
 Visulizations using \code{\link{ggplot2}}. The input is \code{\link{tibble}}.
 }
 \details{
-\code{barLocDate} plots a bar chart to count the number of samples through the time (date),
-and coloured by locations.
+\code{barLocDate} plots a bar chart to count the number of samples
+through the sampling date, and coloured by locations.
 }
 \examples{
 meta <- extractMeta(seqs.df, sep="\\\\|", cols = c("id","date","country","city"))
+# need both sampling date and location
 p <- barLocDate(meta, fill = "country")
 title=paste(nrow(meta),"samples from", length(unique(meta[["region"]])),
       "regions from between", date_format("\%d-\%m-\%Y")(min(meta[["date"]])),
