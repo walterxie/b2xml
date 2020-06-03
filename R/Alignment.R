@@ -8,6 +8,7 @@
 #' @description
 #' Analyse the alignment extracted from BEAST 2 XML.
 #' The input is \code{\link{tibble}}.
+#' @keywords alignment
 #'
 #' @details
 #' \code{countCharFreq} splits sequences and counts alphabet frequency.
@@ -15,7 +16,6 @@
 #' @param seqs.df the \code{\link{tibble}} returned by \code{\link{getSeqsDF}}.
 #' @param attr.taxon,attr.seq attribute names required in BEAST 2 XML.
 #' @param CASE.FUN the function (to use upper case as default).
-#' @keywords alignment
 #' @export
 #' @examples
 #' seqs.df <- getSeqsDF(xml)

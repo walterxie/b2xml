@@ -8,6 +8,7 @@
 #' @description
 #' Analyse the alignment extracted from BEAST 2 XML.
 #' The input is \code{\link{tibble}}.
+#' @keywords metadata
 #'
 #' @details
 #' \code{extractMeta} extracts meta data from taxa names into a \code{\link{tibble}}.
@@ -20,7 +21,6 @@
 #' @param sep Separator between columns, see \code{\link{separate}}.
 #' @param cols Column names after splitting \code{taxon} into multiple columns.
 #' @param ... Other arguments passed to \code{\link{separate}}.
-#' @keywords alignment
 #' @export
 #' @examples
 #' seqs.df <- getSeqsDF(xml)

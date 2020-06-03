@@ -44,4 +44,4 @@ print(meta, n=Inf)
 write_delim(meta, "meta.tsv", delim = "\t")
 
 }
-\keyword{alignment}
+\keyword{metadata}

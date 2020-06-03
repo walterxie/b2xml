@@ -8,6 +8,7 @@
 #' @description
 #' The functions to parse BEAST 2 XML using \code{\link{xml2}}.
 #' The getter will return \code{nodeset} defined in \code{\link{xml2}}.
+#' @keywords xml
 #'
 #' @details
 #' \code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
@@ -55,7 +56,6 @@ getTags <- function(xml, xpath="", ...) {
 
 #' @details
 #' \code{getSeqs} gets all \code{<sequence>}.
-#' @keywords xml
 #' @export
 #' @examples
 #' seqs <- getSeqs(xml)
@@ -70,8 +70,6 @@ getSeqs <- function(xml) {
 #' \code{getTaxa} pulls out the taxa name, and is used aftrer \code{getSeqs}.
 #'
 #' @param seqs the result from \code{getSeqs}.
-#' @param xpath A string containing a xpath (1.0) expression.
-#' @keywords xml
 #' @export
 #' @examples
 #' taxa.names <- getTaxa(seqs)
@@ -95,7 +93,6 @@ getParameters <- function(xml) {
 #' return original input, if the attribute is not defined in the XML.
 #' @param nodeset the result from getters using \code{\link{xml_find_all}}.
 #' @export
-#' @rdname XMLParser
 #' @examples
 #' param <- getParameters(xml)
 #' filterByAtrr(param, attr="id", value="bPopSizes")
@@ -107,7 +104,6 @@ filterByAtrr <- function(nodeset, attr="id", value="mcmc") {
 }
 
 #' @export
-#' @rdname XMLParser
 #' @examples
 #' bPopSizes <- getParamByID(param, id="bPopSizes")
 #' xml_attr(bPopSizes, "dimension") <- "20"
