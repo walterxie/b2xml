@@ -10,18 +10,19 @@
 #' The getter will return \code{nodeset} defined in \code{\link{xml2}}.
 #'
 #' @details
-#' \code{getSeqs} convert BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
+#' \code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
 #'
 #' @param xml xml object from \code{\link{read_xml}}.
 #' @param xpath A string containing a xpath (1.0) expression.
 #' @keywords xml
 #' @export
 #' @examples
+#' require(xml2)
 #' xml <- read_xml(file.path("beast2.xml"))
-#' seqs <- getSeqs(xml)
+#' seqs.df <- getSeqsDF(xml)
 #'
 #' @rdname XMLParser
-getSeqs <- function(xml, xpath="//sequence") {
+getSeqsDF <- function(xml, xpath="//sequence") {
   require(tidyverse)
   require(xml2)
   if ( !grepl(xml_name(xml), xpath) )
@@ -38,63 +39,106 @@ getSeqs <- function(xml, xpath="//sequence") {
 }
 
 #' @details
-#' \code{getTag} get all node sets under xpath.
+#' \code{getTags} is a generic function to get all node sets under xpath.
 #'
 #' @param ... Other arguments passed to \code{\link{xml_find_all}}.
 #' @export
 #' @examples
-#' getTag(xml , xpath="//data|//alignment")
+#' getTags(xml , xpath="//data|//alignment")
 #'
 #' @rdname XMLParser
-getTag(xml, xpath="", ...) {
+getTags <- function(xml, xpath="", ...) {
   require(tidyverse)
   require(xml2)
-  stopifnot( grepl(xml_name(xml), xpath) )
   xml_find_all(xml, xpath, ...)
 }
 
 #' @details
-#' \code{getSpec} get all node sets containing spec="???".
-#'
-#' @param spec The class specified in XML.
+#' \code{getSeqs} gets all \code{<sequence>}.
+#' @keywords xml
 #' @export
 #' @examples
-#' getSpec(xml , xpath="//data|//alignment", spec="FilteredAlignment")
+#' seqs <- getSeqs(xml)
+#' @rdname XMLParser
+getSeqs <- function(xml) {
+  seqs <- getTags(xml, xpath="//sequence")
+  cat("Load ", length(seqs), " squences from BEAST XML.")
+  return(seqs)
+}
+
+#' @details
+#' \code{getTaxa} pulls out the taxa name, and is used aftrer \code{getSeqs}.
+#'
+#' @param seqs the result from \code{getSeqs}.
+#' @param xpath A string containing a xpath (1.0) expression.
+#' @keywords xml
+#' @export
+#' @examples
+#' taxa.names <- getTaxa(seqs)
 #'
 #' @rdname XMLParser
-getSpec(xml, xpath="", spec="") {
-  xml <- getTag(xml, xpath)
-  xml[!is.na(xml_attr(xml, "spec")) & xml_attr(xml, "spec")==spec]
+getTaxa <- function(seqs, taxon.tag="taxon") {
+  # taxa names
+  xml_attr(seqs, taxon.tag)
 }
 
 #' @details
-#' \code{getFilteredAlignment} get all \code{spec="FilteredAlignment"}
-#' from <data> and <alignment>.
-#' @export
-#' @rdname XMLParser
-getFilteredAlignment <- function(xml) {
-  getSpec(xml , xpath="//data|//alignment", spec="FilteredAlignment")
-}
-
-#' @details
-#' \code{getParameters} get all <parameter> including <stateNode>.
+#' \code{getParameters} gets all <parameter> including <stateNode>.
 #' @export
 #' @rdname XMLParser
 getParameters <- function(xml) {
-  getTag(xml , xpath="//parameter|//stateNode")
+  getTags(xml , xpath="//parameter|//stateNode")
 }
 
 #' @details
-#' Filter a node set by \code{id}.
+#' \code{filterByAtrr} is a generic function to filter a node set by attributes.
+#' return original input, if the attribute is not defined in the XML.
+#' @param nodeset the result from getters using \code{\link{xml_find_all}}.
 #' @export
 #' @rdname XMLParser
 #' @examples
 #' param <- getParameters(xml)
+#' filterByAtrr(param, attr="id", value="bPopSizes")
+#'
+#' @rdname XMLParser
+filterByAtrr <- function(nodeset, attr="id", value="mcmc") {
+  attr <- xml_attr(nodeset, attr)
+  nodeset[!is.na(attr) & attr==value]
+}
+
+#' @export
+#' @rdname XMLParser
+#' @examples
 #' bPopSizes <- getParamByID(param, id="bPopSizes")
 #' xml_attr(bPopSizes, "dimension") <- "20"
 #'
 #' @rdname XMLParser
 getParamByID <- function(nodeset, id="") {
-  nodeset[!is.na(xml_attr(nodeset, "id")) & xml_attr(nodeset, "id")==id]
+  filterByAtrr(nodeset, attr="id", value=id)
+}
+
+
+#' @details
+#' \code{getSpec} get all node sets containing spec="???".
+#'
+#' @param spec The class is specified in BEAST XML.
+#' @export
+#' @examples
+#' getSpec(xml , xpath="//data|//alignment", spec="FilteredAlignment")
+#' getFilteredAlignment(xml)
+#'
+#' @rdname XMLParser
+getSpec <- function(xml, xpath="", spec="") {
+  nodeset <- getTags(xml, xpath)
+  filterByAtrr(nodeset, attr="spec", value=spec)
+}
+
+#' @details
+#' \code{getFilteredAlignment} gets all \code{spec="FilteredAlignment"}
+#' from <data> and <alignment>.
+#' @export
+#' @rdname XMLParser
+getFilteredAlignment <- function(xml) {
+  getSpec(xml , xpath="//data|//alignment", spec="FilteredAlignment")
 }
 

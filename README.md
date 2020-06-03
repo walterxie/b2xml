@@ -15,7 +15,7 @@ library("b2xml")
 Or install from `b2xml_*.tar.gz`.
 
 ```R
-install.packages("b2xml_0.0.0.9000.tar.gz", repos = NULL, type = "source")
+install.packages("b2xml_0.0.9.tar.gz", repos = NULL, type = "source")
 library("b2xml")
 ```
 
