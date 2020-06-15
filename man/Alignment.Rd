@@ -44,7 +44,7 @@ seqs.df <- getSeqsDF(xml)
 freq <- countCharFreq(seqs.df, CASE.FUN=tolower)
 print(freq, n=Inf)
 
-writeFasta(seqs.df)
+writeFasta(seqs.df, file="seqs.fasta")
 
 }
 \keyword{alignment}
