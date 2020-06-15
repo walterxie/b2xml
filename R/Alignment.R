@@ -37,3 +37,21 @@ countCharFreq <- function(seqs.df, attr.taxon="taxon", attr.seq="value", CASE.FU
 
   freq %>% select(-value) %>% select(!!attr.taxon, CASE.FUN(c("a", "c", "g", "t", "n")), everything())
 }
+
+
+#' @details
+#' \code{writeFasta} write sequences to fasta format.
+#' @param file the fasta file name.
+#' @export
+#' @examples
+#' writeFasta(seqs.df)
+#'
+#' @rdname Alignment
+writeFasta <- function(seqs.df, file="seqs.fasta", attr.taxon="taxon", attr.seq="value", CASE.FUN=toupper) {
+  cat("",file=file)
+  for(i in 1:nrow(seqs.df)) {
+    cat(">", seqs.df[i,attr.taxon], "\n", file=file, append=TRUE)
+    cat(">", seqs.df[i,attr.seq], "\n", file=file, append=TRUE)
+  }
+}
+

@@ -3,10 +3,19 @@
 \name{Alignment}
 \alias{Alignment}
 \alias{countCharFreq}
+\alias{writeFasta}
 \title{Alignment analyser}
 \usage{
 countCharFreq(
   seqs.df,
+  attr.taxon = "taxon",
+  attr.seq = "value",
+  CASE.FUN = toupper
+)
+
+writeFasta(
+  seqs.df,
+  file = "seqs.fasta",
   attr.taxon = "taxon",
   attr.seq = "value",
   CASE.FUN = toupper
@@ -18,6 +27,8 @@ countCharFreq(
 \item{attr.taxon, attr.seq}{attribute names required in BEAST 2 XML.}
 
 \item{CASE.FUN}{the function (to use upper case as default).}
+
+\item{file}{the fasta file name.}
 }
 \description{
 Analyse the alignment extracted from BEAST 2 XML.
@@ -25,11 +36,15 @@ The input is \code{\link{tibble}}.
 }
 \details{
 \code{countCharFreq} splits sequences and counts alphabet frequency.
+
+\code{writeFasta} write sequences to fasta format.
 }
 \examples{
 seqs.df <- getSeqsDF(xml)
 freq <- countCharFreq(seqs.df, CASE.FUN=tolower)
 print(freq, n=Inf)
+
+writeFasta(seqs.df)
 
 }
 \keyword{alignment}
