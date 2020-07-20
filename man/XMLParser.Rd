@@ -2,30 +2,30 @@
 % Please edit documentation in R/XMLParser.R
 \name{XMLParser}
 \alias{XMLParser}
-\alias{getSeqsDF}
 \alias{getTags}
+\alias{filterByAtrr}
+\alias{getSeqsDF}
 \alias{getSeqs}
 \alias{getTaxa}
 \alias{getParameters}
-\alias{filterByAtrr}
 \alias{getParamByID}
 \alias{getSpec}
 \alias{getFilteredAlignment}
 \title{parse BEAST 2 XML}
 \usage{
-getSeqsDF(xml, xpath = "//sequence")
-
 getTags(xml, xpath = "", ...)
-
-getSeqs(xml)
-
-getTaxa(seqs, taxon.tag = "taxon")
-
-getParameters(xml)
 
 filterByAtrr(nodeset, attr = "id", value = "mcmc")
 
-getParamByID(nodeset, id = "")
+getSeqsDF(xml, xpath = "//sequence")
+
+getSeqs(xml)
+
+getTaxa(seqs, attr = "taxon")
+
+getParameters(xml)
+
+getParamByID(xml, xpath = "//parameter|//stateNode", id = "")
 
 getSpec(xml, xpath = "", spec = "")
 
@@ -38,9 +38,13 @@ getFilteredAlignment(xml)
 
 \item{...}{Other arguments passed to \code{\link{xml_find_all}}.}
 
-\item{seqs}{the result from \code{getSeqs}.}
-
 \item{nodeset}{the result from getters using \code{\link{xml_find_all}}.}
+
+\item{attr}{xml object attribute.}
+
+\item{value}{the value of the xml object attribute.}
+
+\item{seqs}{the result from \code{getSeqs}.}
 
 \item{spec}{The class is specified in BEAST XML.}
 }
@@ -49,9 +53,12 @@ The functions to parse BEAST 2 XML using \code{\link{xml2}}.
 The getter will return \code{nodeset} defined in \code{\link{xml2}}.
 }
 \details{
-\code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
-
 \code{getTags} is a generic function to get all node sets under xpath.
+
+\code{filterByAtrr} is a generic function to filter a node set by attributes.
+return original input, if the attribute is not defined in the XML.
+
+\code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
 
 \code{getSeqs} gets all \code{<sequence>}.
 
@@ -59,8 +66,7 @@ The getter will return \code{nodeset} defined in \code{\link{xml2}}.
 
 \code{getParameters} gets all <parameter> including <stateNode>.
 
-\code{filterByAtrr} is a generic function to filter a node set by attributes.
-return original input, if the attribute is not defined in the XML.
+\code{getParamByID} is replaced by \code{getTagByID}.
 
 \code{getSpec} get all node sets containing spec="???".
 
@@ -68,20 +74,17 @@ return original input, if the attribute is not defined in the XML.
 from <data> and <alignment>.
 }
 \examples{
+getTags(xml , xpath="//data|//alignment")
+
+param <- getTags(xml, "//parameter")
+param \%>\% filterByAtrr(param, attr="id", value="strict.clock")
+
 require(xml2)
 xml <- read_xml(file.path("beast2.xml"))
 seqs.df <- getSeqsDF(xml)
 
-getTags(xml , xpath="//data|//alignment")
-
 seqs <- getSeqs(xml)
 taxa.names <- getTaxa(seqs)
-
-param <- getParameters(xml)
-filterByAtrr(param, attr="id", value="bPopSizes")
-
-bPopSizes <- getParamByID(param, id="bPopSizes")
-xml_attr(bPopSizes, "dimension") <- "20"
 
 getSpec(xml , xpath="//data|//alignment", spec="FilteredAlignment")
 getFilteredAlignment(xml)

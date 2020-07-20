@@ -55,3 +55,16 @@ writeFasta <- function(seqs.df, file="seqs.fasta", attr.taxon="taxon", attr.seq=
   }
 }
 
+
+maskSites <- function(seqs.df, pos=c(), attr.taxon="taxon", attr.seq="value") {
+
+
+
+}
+
+
+
+
+
+
+

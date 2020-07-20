@@ -17,8 +17,7 @@ writeFasta(
   seqs.df,
   file = "seqs.fasta",
   attr.taxon = "taxon",
-  attr.seq = "value",
-  CASE.FUN = toupper
+  attr.seq = "value"
 )
 }
 \arguments{
