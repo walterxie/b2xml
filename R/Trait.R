@@ -37,12 +37,14 @@ getDatesDF <- function(nodeset, attr.date="value", sep1=",", sep2="=", cols = c(
 #' @export
 #' @examples
 #' dates.df <- addDecimalDate(dates.df, date.format="%Y-%m-%d")
+#' # tibble does not show decimals
+#' dates.df[1:5,] %>% as.data.frame
 #'
 #' @rdname Trait
 addDecimalDate <- function(dates.df, cols = c("taxon","date"), date.format="%Y-%m-%d") {
   stopifnot( all(cols %in% names(dates.df)) )
   require("lubridate")
-  dates.df <- dates.df %>% mutate(date=as.Date(format=date.format)) %>%
+  dates.df <- dates.df %>% mutate(date=as.Date(date, format=!!date.format)) %>%
     mutate(date.num=decimal_date(ymd(date)))
 }
 

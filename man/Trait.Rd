@@ -47,6 +47,8 @@ dates.df$date <- as.Date(dates.df$date, format="\%Y-\%m-\%d")
 dates.df[is.na(dates.df$date),]
 
 dates.df <- addDecimalDate(dates.df, date.format="\%Y-\%m-\%d")
+# tibble does not show decimals
+dates.df[1:5,] \%>\% as.data.frame
 
 }
 \keyword{trait}
