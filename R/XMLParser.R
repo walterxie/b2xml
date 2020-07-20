@@ -63,7 +63,7 @@ getTagByID <- function(xml, xpath="", id="", ...) {
 
 #' @details
 #' \code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
-#'
+#' The column names will be the attribute names.
 #' @export
 #' @examples
 #' require(xml2)
@@ -102,7 +102,7 @@ getSeqs <- function(xml) {
 #' @details
 #' \code{getTaxa} pulls out the taxa name, and is used aftrer \code{getSeqs}.
 #'
-#' @param seqs the result from \code{getSeqs}.
+#' @param seqs the result ("xml_nodeset") from \code{getSeqs}.
 #' @export
 #' @examples
 #' taxa.names <- getTaxa(seqs)

@@ -44,7 +44,7 @@ getFilteredAlignment(xml)
 
 \item{value}{the value of the xml object attribute.}
 
-\item{seqs}{the result from \code{getSeqs}.}
+\item{seqs}{the result ("xml_nodeset") from \code{getSeqs}.}
 
 \item{spec}{The class is specified in BEAST XML.}
 }
@@ -59,6 +59,7 @@ The getter will return \code{nodeset} defined in \code{\link{xml2}}.
 return original input, if the attribute is not defined in the XML.
 
 \code{getSeqsDF} converts BEAST XML \code{<sequence>} into a \code{\link{tibble}}.
+The column names will be the attribute names.
 
 \code{getSeqs} gets all \code{<sequence>}.
 
