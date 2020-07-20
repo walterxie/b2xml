@@ -3,6 +3,7 @@
 \name{Trait}
 \alias{Trait}
 \alias{getDatesDF}
+\alias{addDecimalDate}
 \title{Trait analyser}
 \usage{
 getDatesDF(
@@ -11,6 +12,12 @@ getDatesDF(
   sep1 = ",",
   sep2 = "=",
   cols = c("taxon", "date")
+)
+
+addDecimalDate(
+  dates.df,
+  cols = c("taxon", "date"),
+  date.format = "\%Y-\%m-\%d"
 )
 }
 \arguments{
@@ -27,6 +34,9 @@ Analyse the trait extracted from BEAST 2 XML.
 }
 \details{
 \code{getDates} splits value of date trait in XML into a \code{\link{tibble}}.
+
+\code{addDecimalDate} adds a column in the numeric date (year is integer) into data.frame,
+given the date column in the format "yyyy-mm-dd".
 }
 \examples{
 trait.date <- getTags(xml, xpath="//trait")
@@ -35,6 +45,8 @@ dates.df <- getDatesDF(trait.date)
 dates.df$date <- as.Date(dates.df$date, format="\%Y-\%m-\%d")
 # check missing dates
 dates.df[is.na(dates.df$date),]
+
+dates.df <- addDecimalDate(dates.df, date.format="\%Y-\%m-\%d")
 
 }
 \keyword{trait}

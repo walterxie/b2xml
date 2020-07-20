@@ -38,6 +38,7 @@ getDatesDF <- function(nodeset, attr.date="value", sep1=",", sep2="=", cols = c(
 #' @examples
 #' dates.df <- addDecimalDate(dates.df, date.format="%Y-%m-%d")
 #'
+#' @rdname Trait
 addDecimalDate <- function(dates.df, cols = c("taxon","date"), date.format="%Y-%m-%d") {
   stopifnot( all(cols %in% names(dates.df)) )
   require("lubridate")
