@@ -8,3 +8,8 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
+Imports:
+    tidyverse,
+    xml2,
+    ggplot2,
+    scales
