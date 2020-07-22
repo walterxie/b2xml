@@ -27,7 +27,8 @@
 #' # seq1|2020-04-25|New_Zealand|Auckland
 #' meta <- extractMeta(seqs.df, sep="\\|", cols = c("id","date","country","city"))
 #' meta <- meta %>% mutate(month=gsub("(\\d+)-(\\d+)-.*","\\1-\\2",date))
-#' print(meta, n=Inf)
+#' # summarise by 'country' and 'month'
+#' meta %>% group_by(country,month) %>% summarise(count=n())
 #' write_delim(meta, "meta.tsv", delim = "\t")
 #'
 #' @rdname Metadata
