@@ -29,7 +29,7 @@ getDatesDF <- function(xml, xpath="//trait", attr.date="value",
   df <- xml_attr(nodeset, attr.date) %>% str_split(sep1) %>% unlist %>%
     gsub('\\s+|\\n', '', .) %>% as_tibble %>%
     separate(value, cols, sep=sep2)
-  if ("date" %in% colnames(meta)) {
+  if ("date" %in% colnames(df)) {
     if (all(is.na(as.Date(as.character(df$date),format="%d/%m/%Y"))))
       df <- df %>% mutate(date = as.Date(date))
     else
