@@ -51,6 +51,8 @@ Visulizations using \code{\link{ggplot2}}. The input is \code{\link{tibble}}.
 through the sampling date, and coloured by locations.
 }
 \examples{
+dates.df <- getDatesDF(xml, xpath="//trait")
+loc.df <- getLocDF(xml, xpath="//traitSet")
 meta.df <- inner_join(dates.df, loc.df, by = "taxon")
 stopifnot(nrow(meta.df)==nrow(dates.df) && nrow(meta.df)==nrow(loc.df))
 plotLocDate(meta.df)

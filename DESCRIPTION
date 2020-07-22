@@ -1,7 +1,7 @@
 Package: b2xml
 Type: Package
 Title: Edit and visualize BEAST 2 XML
-Version: 1.0.0
+Version: 1.0.1
 Author: Walter Xie
 Description: R package to edit and visualize BEAST 2 XML.
 License: MIT

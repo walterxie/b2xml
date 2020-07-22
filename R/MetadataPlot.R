@@ -11,6 +11,8 @@
 #' @param meta.df data frame to contain samples, dates and locations.
 #' @export
 #' @examples
+#' dates.df <- getDatesDF(xml, xpath="//trait")
+#' loc.df <- getLocDF(xml, xpath="//traitSet")
 #' meta.df <- inner_join(dates.df, loc.df, by = "taxon")
 #' stopifnot(nrow(meta.df)==nrow(dates.df) && nrow(meta.df)==nrow(loc.df))
 #' plotLocDate(meta.df)
@@ -32,6 +34,7 @@ plotLocDate <- function(meta.df, date.col="date", trait.col="trait",
                   "and", date_format("%d-%m-%Y")(max(meta.df[[date.col]])))) +
     xlab(x.lab) + ylab(y.lab) + labs(fill=legend) +
     theme_minimal()
+  p
 }
 
 
