@@ -8,24 +8,25 @@
 #' @details
 #' \code{getDates} splits value of date trait in XML into a \code{\link{tibble}}.
 #'
-#' @param nodeset the \code{\link{xml_nodeset}} containing date trait.
+#' @param xml xml object from \code{\link{read_xml}}.
 #' @param attr.date attribute name of date trait in BEAST 2 XML.
 #' @param sep1,sep2 separator to split dates.
 #' @param cols column names in returned \code{\link{tibble}}.
 #' @export
 #' @examples
-#' trait.date <- getTags(xml, xpath="//trait")
-#' dates.df <- getDatesDF(trait.date)
+#' dates.df <- getDatesDF(xml, xpath="//trait")
 #' # if date is 2020-03-31
 #' dates.df$date <- as.Date(dates.df$date, format="%Y-%m-%d")
 #' # check missing dates
 #' dates.df[is.na(dates.df$date),]
 #'
 #' @rdname Trait
-getDatesDF <- function(nodeset, attr.date="value", sep1=",", sep2="=", cols = c("taxon","date")) {
+getDatesDF <- function(xml, xpath="//trait", attr.date="value",
+                       sep1=",", sep2="=", cols = c("taxon","date")) {
+  nodeset <- getTags(xml, xpath=xpath)
   stopifnot(class(nodeset)=="xml_nodeset" && length(nodeset) == 1)
 
-  attr <- xml_attr(nodeset, attr.date) %>% str_split(sep1) %>% unlist %>%
+  df <- xml_attr(nodeset, attr.date) %>% str_split(sep1) %>% unlist %>%
     gsub('\\s+|\\n', '', .) %>% as_tibble %>%
     separate(value, cols, sep=sep2)
 }
@@ -48,12 +49,27 @@ addDecimalDate <- function(dates.df, cols = c("taxon","date"), date.format="%Y-%
     mutate(date.num=decimal_date(ymd(date)))
 }
 
+#' @details
+#' \code{getLocDF} splits value of date trait in XML into a \code{\link{tibble}}.
+#'
+#' @export
 #' @examples
-#' trait.loc <- getTags(xml , xpath="//traitSet")
+#' loc.df <- getLocDF(xml, xpath="//traitSet")
+#' # if date is 2020-03-31
+#' dates.df$date <- as.Date(dates.df$date, format="%Y-%m-%d")
+#' # check missing dates
+#' dates.df[is.na(dates.df$date),]
 #'
-#'
-#'
+#' @rdname Trait
+getLocDF <- function(xml, xpath="//traitSet", attr.date="value",
+                     sep1=",", sep2="=", cols = c("taxon","date")) {
+  nodeset <- getTags(xml, xpath=xpath)
+  stopifnot(class(nodeset)=="xml_nodeset" && length(nodeset) == 1)
 
+  df <- xml_text(nodeset) %>% str_split(sep1) %>% unlist %>%
+    gsub('\\s+|\\n', '', .) %>% as_tibble %>%
+    separate(value, cols, sep=sep2)
+}
 
 
 

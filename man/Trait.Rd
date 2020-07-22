@@ -4,10 +4,12 @@
 \alias{Trait}
 \alias{getDatesDF}
 \alias{addDecimalDate}
+\alias{getLocDF}
 \title{Trait analyser}
 \usage{
 getDatesDF(
-  nodeset,
+  xml,
+  xpath = "//trait",
   attr.date = "value",
   sep1 = ",",
   sep2 = "=",
@@ -19,9 +21,18 @@ addDecimalDate(
   cols = c("taxon", "date"),
   date.format = "\%Y-\%m-\%d"
 )
+
+getLocDF(
+  xml,
+  xpath = "//traitSet",
+  attr.date = "value",
+  sep1 = ",",
+  sep2 = "=",
+  cols = c("taxon", "date")
+)
 }
 \arguments{
-\item{nodeset}{the \code{\link{xml_nodeset}} containing date trait.}
+\item{xml}{xml object from \code{\link{read_xml}}.}
 
 \item{attr.date}{attribute name of date trait in BEAST 2 XML.}
 
@@ -37,10 +48,11 @@ Analyse the trait extracted from BEAST 2 XML.
 
 \code{addDecimalDate} adds a column in the numeric date (year is integer) into data.frame,
 given the date column in the format "yyyy-mm-dd".
+
+\code{getLocDF} splits value of date trait in XML into a \code{\link{tibble}}.
 }
 \examples{
-trait.date <- getTags(xml, xpath="//trait")
-dates.df <- getDatesDF(trait.date)
+dates.df <- getDatesDF(xml, xpath="//trait")
 # if date is 2020-03-31
 dates.df$date <- as.Date(dates.df$date, format="\%Y-\%m-\%d")
 # check missing dates
@@ -49,6 +61,12 @@ dates.df[is.na(dates.df$date),]
 dates.df <- addDecimalDate(dates.df, date.format="\%Y-\%m-\%d")
 # tibble does not show decimals
 dates.df[1:5,] \%>\% as.data.frame
+
+loc.df <- getLocDF(xml, xpath="//traitSet")
+# if date is 2020-03-31
+dates.df$date <- as.Date(dates.df$date, format="\%Y-\%m-\%d")
+# check missing dates
+dates.df[is.na(dates.df$date),]
 
 }
 \keyword{trait}
