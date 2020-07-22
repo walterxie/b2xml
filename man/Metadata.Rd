@@ -3,13 +3,13 @@
 \name{Metadata}
 \alias{Metadata}
 \alias{extractMeta}
-\title{Alignment analyser}
+\title{Metadata}
 \usage{
 extractMeta(
   seqs.df,
   attr.taxon = "taxon",
   sep = "\\\\|",
-  cols = c("id", "date"),
+  cols = c("id", "date", "country", "city"),
   ...
 )
 }
@@ -25,7 +25,7 @@ extractMeta(
 \item{...}{Other arguments passed to \code{\link{separate}}.}
 }
 \description{
-Analyse the alignment extracted from BEAST 2 XML.
+Analyse the metadata extracted from taxa names in the BEAST 2 XML.
 The input is \code{\link{tibble}}.
 }
 \details{
@@ -38,8 +38,7 @@ totalcount="4" value="acgt"/>}.
 seqs.df <- getSeqsDF(xml)
 # seq1|2020-04-25|New_Zealand|Auckland
 meta <- extractMeta(seqs.df, sep="\\\\|", cols = c("id","date","country","city"))
-meta <- meta \%>\% mutate(date = as.Date(date)) \%>\%
-                 mutate(month=gsub("(\\\\d+)-(\\\\d+)-.*","\\\\1-\\\\2",date))
+meta <- meta \%>\% mutate(month=gsub("(\\\\d+)-(\\\\d+)-.*","\\\\1-\\\\2",date))
 print(meta, n=Inf)
 write_delim(meta, "meta.tsv", delim = "\t")
 

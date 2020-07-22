@@ -51,18 +51,15 @@ addDecimalDate <- function(dates.df, cols = c("taxon","date"), date.format="%Y-%
 
 #' @details
 #' \code{getLocDF} splits value of date trait in XML into a \code{\link{tibble}}.
-#'
+#' @seealso \code{extractMeta}
 #' @export
 #' @examples
 #' loc.df <- getLocDF(xml, xpath="//traitSet")
-#' # if date is 2020-03-31
-#' dates.df$date <- as.Date(dates.df$date, format="%Y-%m-%d")
-#' # check missing dates
-#' dates.df[is.na(dates.df$date),]
+#' loc.df %>% group_by(trait) %>% summarise(count=n())
 #'
 #' @rdname Trait
 getLocDF <- function(xml, xpath="//traitSet", attr.date="value",
-                     sep1=",", sep2="=", cols = c("taxon","date")) {
+                     sep1=",", sep2="=", cols = c("taxon","trait")) {
   nodeset <- getTags(xml, xpath=xpath)
   stopifnot(class(nodeset)=="xml_nodeset" && length(nodeset) == 1)
 

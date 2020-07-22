@@ -28,7 +28,7 @@ getLocDF(
   attr.date = "value",
   sep1 = ",",
   sep2 = "=",
-  cols = c("taxon", "date")
+  cols = c("taxon", "trait")
 )
 }
 \arguments{
@@ -63,10 +63,10 @@ dates.df <- addDecimalDate(dates.df, date.format="\%Y-\%m-\%d")
 dates.df[1:5,] \%>\% as.data.frame
 
 loc.df <- getLocDF(xml, xpath="//traitSet")
-# if date is 2020-03-31
-dates.df$date <- as.Date(dates.df$date, format="\%Y-\%m-\%d")
-# check missing dates
-dates.df[is.na(dates.df$date),]
+loc.df \%>\% group_by(trait) \%>\% summarise(count=n())
 
+}
+\seealso{
+\code{extractMeta}
 }
 \keyword{trait}
