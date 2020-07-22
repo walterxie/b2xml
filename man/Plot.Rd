@@ -52,6 +52,7 @@ through the sampling date, and coloured by locations.
 }
 \examples{
 meta.df <- inner_join(dates.df, loc.df, by = "taxon")
+stopifnot(nrow(meta.df)==nrow(dates.df) && nrow(meta.df)==nrow(loc.df))
 plotLocDate(meta.df)
 
 meta <- extractMeta(seqs.df, sep="\\\\|", cols = c("id","date","country","city"))
