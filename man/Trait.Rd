@@ -63,7 +63,10 @@ dates.df <- addDecimalDate(dates.df, date.format="\%Y-\%m-\%d")
 dates.df[1:5,] \%>\% as.data.frame
 
 loc.df <- getLocDF(xml, xpath="//traitSet")
-loc.df \%>\% group_by(trait) \%>\% summarise(count=n())
+demes <- loc.df \%>\% group_by(trait) \%>\% summarise(count=n())
+require(knitr)
+# print to markdown
+knitr::kable(demes)
 
 }
 \seealso{

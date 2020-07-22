@@ -29,6 +29,13 @@ getDatesDF <- function(xml, xpath="//trait", attr.date="value",
   df <- xml_attr(nodeset, attr.date) %>% str_split(sep1) %>% unlist %>%
     gsub('\\s+|\\n', '', .) %>% as_tibble %>%
     separate(value, cols, sep=sep2)
+  if ("date" %in% colnames(meta)) {
+    if (all(is.na(as.Date(as.character(df$date),format="%d/%m/%Y"))))
+      df <- df %>% mutate(date = as.Date(date))
+    else
+      warning("Column 'date' is not in the date format !")
+  }
+  df
 }
 
 #' @details
@@ -55,7 +62,10 @@ addDecimalDate <- function(dates.df, cols = c("taxon","date"), date.format="%Y-%
 #' @export
 #' @examples
 #' loc.df <- getLocDF(xml, xpath="//traitSet")
-#' loc.df %>% group_by(trait) %>% summarise(count=n())
+#' demes <- loc.df %>% group_by(trait) %>% summarise(count=n())
+#' require(knitr)
+#' # print to markdown
+#' knitr::kable(demes)
 #'
 #' @rdname Trait
 getLocDF <- function(xml, xpath="//traitSet", attr.date="value",

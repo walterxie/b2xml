@@ -37,6 +37,7 @@ extractMeta <- function(seqs.df, attr.taxon="taxon", sep="\\|",
   # need manually update regarding to dataset
   meta <- seqs.df %>% select(!!attr.taxon) %>%
     separate(!!attr.taxon, cols, sep=sep, remove = F, ...)
+  # , fill='right', extra = "drop") no warning
   #%>% mutate(month=gsub("(\\d+)-(\\d+)-.*","\\1-\\2",date))
   if ("date" %in% colnames(meta))
     meta <- meta %>% mutate(date = as.Date(date))
